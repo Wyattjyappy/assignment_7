@@ -120,9 +120,56 @@ population size. Here, assume that for each state, the winner will take
 all its electoral votes.
 
 ```{r}
+q_2b %>% 
+  ggplot(mapping = aes(x = metric, y = value, fill = winner)) +
+  geom_col(position = "fill")
 ```
 
+<br> <br>
 
+### Question 3. What if the election was determined by popular votes?
+
+**3a.** First, from [this dataset on
+GitHub](https://raw.githubusercontent.com/kshaffer/election2016/master/2016ElectionResultsByState.csv),
+calculate the number of popular votes each candidate received as shown
+below. Name this new dataset `q_3a`, and print it. <br>
+
+*Note: all candidates other than Clinton and Trump are included in
+`others` as shown below.*
+
+*Hint: `pivot_longer()` may be useful in here.*
+
+```{r}
+q_3a <- dataset3 %>% 
+  summarise(clinton = sum(clintonVotes),trump = sum(trumpVotes), others = sum(totalVotes - clintonVotes - trumpVotes)) %>% 
+  pivot_longer(cols = c("clinton", "trump", "others"), names_to = "winner", values_to = "value") %>% 
+  mutate(metric = "popular_votes") %>% 
+  select(metric, winner, value)
+
+q_3a
+```
+<br> <br>
+
+**3b.** Combine the `q_2b` dataset with the `q_3a` dataset. Call this
+new dataset `q_3b`, and print it as shown below.
+
+```{r}
+q_3b <- q_2b %>% 
+  full_join(q_3a)
+
+q_3b
+```
+<br> <br>
+
+**3c.** Lastly, use the `q_3b` dataset to contruct a bar plot to show
+the final vote share under the scenarios of **1)** each state has the
+number of electoral votes that it currently has, **2)** each state has
+the number of electoral votes that is exactly proportional to its
+population size, and **3)** the election result is determined by the
+popular vote.
+
+```{r}
+```
 
 
 
