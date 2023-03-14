@@ -9,6 +9,9 @@ output: github_document
 library(tidyverse)
 library(knitr)
 library(dslabs)
+
+dataset3 <- read_csv("https://raw.githubusercontent.com/kshaffer/election2016/master/2016ElectionResultsByState.csv")
+
 ```
 
 <br>
@@ -245,7 +248,9 @@ default dimension. Based on this plot, where did the polls get wrong in
 the 2016 election?
 
 ```{r}
-
+q_4b %>% 
+  ggplot(mapping = aes(x = polling_error, y = state, size = electoral_votes, color = result)) +
+  geom_point()
 ```
 
 
