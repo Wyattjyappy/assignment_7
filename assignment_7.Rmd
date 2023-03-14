@@ -78,8 +78,26 @@ size to 0.1, and turn off its confidence interval.
 
 ```{r}
 q_1b %>% 
-  ggplot(mapping = (x = "electoral_votes", y = "population", color = "winner"))
+  ggplot(mapping = aes(x = population, y = electoral_votes)) +
+  geom_point(mapping = aes(color = winner)) +
+  geom_smooth(mapping = aes(x = population, y = electoral_votes), method = lm, se = FALSE, color = "black", size = 0.1)
 ```
+
+
+### Question 2. Would the election result be any different if the number of electoral votes is exactly proportional to a state’s population size?
+
+**2a.** First, convert the `q_1b` dataset to longer format such that the
+`population` and `electoral_votes` columns are turned into rows as shown
+below. Name this new dataset `q_2a`, and show its first 6 rows.
+
+
+
+
+
+
+
+
+
 
 
 
