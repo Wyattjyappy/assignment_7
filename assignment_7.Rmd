@@ -9,7 +9,6 @@ output: github_document
 library(tidyverse)
 library(knitr)
 library(dslabs)
-q_1a
 ```
 
 <br>
@@ -90,9 +89,38 @@ q_1b %>%
 `population` and `electoral_votes` columns are turned into rows as shown
 below. Name this new dataset `q_2a`, and show its first 6 rows.
 
+```{r}
+q_2a <- q_1b %>% 
+  pivot_longer(c( population, electoral_votes), names_to = 'metric', values_to = 'value')
 
+q_2a %>% 
+  head()
+```
+<br> <br>
 
+**2b.** Then, sum up the number of electoral votes and population size
+across all states for each candidate. Name this new dataset `q_2b`, and
+print it as shown below.
 
+```{r}
+q_2b <- q_2a %>% 
+  group_by(metric, winner) %>% 
+  summarize(value = sum(value))
+
+q_2b
+
+```
+<br> <br>
+
+**2c.** Use the `q_2b` dataset to contruct a bar plot to show the final
+electoral vote share under the scenarios of **1)** each state has the
+number of electoral votes that it currently has, and **2)** each state
+has the number of electoral votes that is exactly proportional to its
+population size. Here, assume that for each state, the winner will take
+all its electoral votes.
+
+```{r}
+```
 
 
 
