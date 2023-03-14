@@ -5,26 +5,81 @@ date: "2023-03-14"
 output: github_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r}
+library(tidyverse)
+library(knitr)
+library(dslabs)
+q_1a
 ```
 
-## R Markdown
+<br>
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+## Excercise: 2016 election result and polling
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+For this exercise, we will explore the result of the 2016 US
+presidential election as well as the polling data. We will use the
+following three datasets in the `dslabs` package, and use `join`
+function to connect them together. As a reminder, you can use `?` to
+learn more about these datasets.
 
-```{r cars}
-summary(cars)
+- `results_us_election_2016`: Election results (popular vote) and
+  electoral college votes from the 2016 presidential election.
+
+- `polls_us_election_2016`: Poll results from the 2016 presidential
+  elections.
+
+- `murders`: Gun murder data from FBI reports. It also contains the
+  population of each state.
+
+We will also use [this
+dataset](https://raw.githubusercontent.com/kshaffer/election2016/master/2016ElectionResultsByState.csv)
+to get the exact numbers of votes for question 3.
+
+<br>
+
+### Question 1. What is the relationship between the population size and the number of electoral votes each state has?
+
+**1a.** Use a `join` function to combine the `murders` dataset, which
+contains information on population size, and the
+`results_us_election_2016` dataset, which contains information on the
+number of electoral votes. Name this new dataset `q_1a`, and show its
+first 6 rows.
+
+```{r}
+q_1a <- murders %>% 
+  left_join(results_us_election_2016)
+
+q_1a %>% 
+  head()
+
+```
+<br> <br>
+
+**1b.** Add a new variable in the `q_1a` dataset to indicate which
+candidate won in each state, and remove the columns `abb`, `region`, and
+`total`. Name this new dataset `q_1b`, and show its first 6 rows.
+
+```{r}
+q_1b <- q_1a %>% 
+  mutate(winner = ifelse(clinton>trump, "clinton", "trump")) %>% 
+  subset(select = -c(abb, region, total))
+
+q_1b %>% 
+  head()
+
 ```
 
-## Including Plots
+<br> <br>
 
-You can also embed plots, for example:
+**1c.** Using the `q_1b` dataset, plot the relationship between
+population size and number of electoral votes. Use color to indicate who
+won the state. Fit a straight line to the data, set its color to black,
+size to 0.1, and turn off its confidence interval.
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r}
+q_1b %>% 
+  ggplot(mapping = (x = "electoral_votes", y = "population", color = "winner"))
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
